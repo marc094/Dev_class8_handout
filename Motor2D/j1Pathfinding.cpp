@@ -168,16 +168,29 @@ int PathNode::CalculateF(const iPoint& destination)
 int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 {
 	// TODO 1: if origin or destination are not walkable, return -1
+	if (!(IsWalkable(origin) && IsWalkable(destination)))
+		return -1;
 
-	// TODO 2: Create two lists: open, close
+	// TODO 2: Create two lists: open, closed
 	// Add the origin tile to open
 	// Iterate while we have tile in the open list
+	PathList open, closed;
+	PathNode node;
+	node.pos = origin;
+	open.list.add(node);
 
-	// TODO 3: Move the lowest score cell from open list to the closed list
-	
+	while (open.list.count() > 0) {
+
+		// TODO 3: Move the lowest score cell from open list to the closed list
+		p2List_item<PathNode>* node = open.GetNodeLowestScore();
+		closed.list.add(node->data);
+
+	}
 	// TODO 4: If we just added the destination, we are done!
 	// Backtrack to create the final path
 	// Use the Pathnode::parent and Flip() the path when you are finish
+
+
 
 	// TODO 5: Fill a list of all adjancent nodes
 
