@@ -131,6 +131,46 @@ public:
 		return(true);
 	}
 
+	bool del(tdata* item_ptr)
+	{
+		p2List_item<tdata>* item = At(find(item_ptr));
+		if (item == NULL)
+		{
+			return (false);
+		}
+
+		// Now reconstruct the list
+		if (item->prev != NULL)
+		{
+			item->prev->next = item->next;
+
+			if (item->next != NULL)
+			{
+				item->next->prev = item->prev;
+			}
+			else
+			{
+				end = item->prev;
+			}
+		}
+		else
+		{
+			if (item->next)
+			{
+				item->next->prev = NULL;
+				start = item->next;
+			}
+			else
+			{
+				start = end = NULL;
+			}
+		}
+
+		RELEASE(item);
+		--size;
+		return(true);
+	}
+
 	/**
 	* Destroy and free all mem
 	*/
@@ -241,8 +281,10 @@ public:
 	*/
 	p2List_item<tdata>* At(unsigned int index)
 	{
-		long                  pos = 0;
-		p2List_item<tdata>*   p_item = start;
+		if (index >= size)
+			return nullptr;
+		long					pos = 0;
+		p2List_item<tdata>*		p_item = start;
 
 		while(p_item != NULL)
 		{
